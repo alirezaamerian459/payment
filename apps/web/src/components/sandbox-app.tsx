@@ -246,7 +246,13 @@ export default function SandboxApp() {
     return <main className="login-screen">
       <section className="login-aside" aria-labelledby="login-title">
         <div className="brand"><span className="brand-mark">P</span><span className="brand-word">PrivatePay</span></div>
-        <div><span className="sandbox-mark"><span className="dot" />فضای آزمایشی</span><h1 id="login-title">قسط‌ها و خریدهایتان را یک‌جا ببینید</h1><p>با حساب نمونه مسیر خرید، پرداخت اقساط و بازپرداخت را در محیط محلی بررسی کنید.</p></div>
+        <div className="login-pitch"><span className="sandbox-mark"><span className="dot" />فضای آزمایشی</span><h1 id="login-title">قسط‌ها و خریدهایتان را یک‌جا ببینید</h1><p>یک خرید نمونه بسازید، نتیجهٔ پرداخت را ببینید و برنامهٔ چهارقسطی را دنبال کنید.</p>
+          <div className="sandbox-flow" aria-label="مراحل خرید چهارقسطی">
+            <div className="sandbox-flow-step"><span>۱</span><div><strong>خرید</strong><small>انتخاب مبلغ نمونه</small></div></div>
+            <div className="sandbox-flow-step"><span>۲</span><div><strong>پرداخت اول</strong><small>نتیجهٔ شبیه‌سازی‌شده</small></div></div>
+            <div className="sandbox-flow-step"><span>۳</span><div><strong>سه قسط بعدی</strong><small>پیگیری در حساب</small></div></div>
+          </div>
+        </div>
         <p className="login-aside-note">موجودی، اعتبار و پرداخت‌ها ساختگی و فقط برای آزمایش هستند. هیچ پیامک یا تراکنش واقعی انجام نمی‌شود.</p>
       </section>
       <section className="login-panel-wrap"><div className="login-panel">
@@ -278,13 +284,14 @@ export default function SandboxApp() {
   const outstandingInstallments = data?.installments.reduce((sum, item) => sum + dueAmount(item), 0) ?? 0;
 
   return <div className="app-shell">
+    <a className="skip-link" href="#main-content">رفتن به محتوای اصلی</a>
     <aside className="sidebar"><div className="brand"><span className="brand-mark">P</span><span className="brand-word">PrivatePay</span></div>
       <nav className="nav-list" aria-label="ناوبری اصلی">{nav.map((item) => <NavButton key={item.id} item={item} active={page === item.id} onClick={() => setPage(item.id)} />)}</nav>
       <div className="sidebar-bottom"><span className="sandbox-mark"><span className="dot" />تراکنش واقعی غیرفعال است</span><div className="mini-profile"><span className="avatar">ک</span><span>کاربر آزمایشی<small>اعتبار {data ? stateName(data.credit.status) : ""}</small></span></div></div>
     </aside>
     <div className="main-column">
       <header className="topbar"><div className="brand"><span className="brand-mark">P</span><span className="brand-word">PrivatePay</span></div><div className="topbar-tools"><span className="sandbox-mark"><span className="dot" />محیط آزمایشی</span><label className="visually-hidden" htmlFor="demo-role">نقش نمایشی</label><select id="demo-role" className="role-select" value={role} onChange={(event) => setRole(event.target.value)} aria-label="نمایش با نقش">{roleOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select><button className="button button-secondary button-small" onClick={logout}>خروج</button></div></header>
-      <main className="content">
+      <main id="main-content" className="content">
         <div className="page-heading"><div><p className="eyebrow">{roleOptions.find(([value]) => value === role)?.[1]}</p><h1>{titles[page][0]}</h1><p>{titles[page][1]}</p></div><button className="button button-secondary button-small" onClick={() => void refresh()} disabled={loading}>{loading ? "در حال تازه‌سازی…" : "تازه‌سازی اطلاعات"}</button></div>
         {error && <div className="notice notice-danger" role="alert">{error}</div>}
         {!data ? <div className="panel"><div className="empty-state"><strong>اطلاعات حساب بارگذاری نشد</strong>اتصال API را بررسی و صفحه را تازه کنید.</div></div> : <>
