@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: privatepay-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/privatepay}
+    username: ${DB_USERNAME:privatepay}
+    password: ${DB_PASSWORD:privatepay_local_only}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  shutdown: graceful
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true

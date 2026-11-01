@@ -1,0 +1,11 @@
+{
+  "name": "PrivatePay",
+  "short_name": "PrivatePay",
+  "description": "محیط توسعه PrivatePay؛ پرداخت واقعی در این نسخه فعال نیست.",
+  "lang": "fa-IR",
+  "dir": "rtl",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f2f6f4",
+  "theme_color": "#167b68"
+}

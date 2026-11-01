@@ -1,0 +1,45 @@
+name: Foundation CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  api-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Compile API
+        working-directory: apps/api
+        run: mvn --batch-mode --no-transfer-progress -DskipTests package
+
+  web-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - name: Install dependencies
+        working-directory: apps/web
+        run: npm ci
+      - name: Scan npm dependencies
+        working-directory: apps/web
+        run: npm audit --audit-level=high
+      - name: Typecheck
+        working-directory: apps/web
+        run: npm run typecheck
+      - name: Build web shell
+        working-directory: apps/web
+        run: npm run build
